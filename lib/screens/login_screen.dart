@@ -5,22 +5,74 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create controllers for the text fields
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
-      body: Center(
+      appBar: AppBar(
+        title: const Text('Login', style: TextStyle(color: Colors.blue)), // Set title color to blue
+        backgroundColor: Colors.white, // Set AppBar background to white
+        iconTheme: const IconThemeData(color: Colors.blue), // Set icon color to blue
+      ),
+      body: Container(
+        color: Colors.white, // Set background to white
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Login to Your Account',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            // App Logo
+            const Icon(
+              Icons.lock,
+              size: 100,
+              color: Colors.blue,
+            ),
+            const SizedBox(height: 30),
+
+            // Email Field
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
+
+            // Password Field
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
+
+            // Login Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
+                // Handle login logic here
+                Navigator.pushNamed(context, '/pin'); // Navigate to PIN code screen
               },
-              child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Set button background to blue
+                foregroundColor: Colors.white, // Set button text color to white
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
           ],
         ),

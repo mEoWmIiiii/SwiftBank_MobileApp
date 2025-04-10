@@ -8,7 +8,6 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.19.0 <4.0.0"
 
-
 dependencies:
   flutter:
     sdk: flutter
@@ -26,14 +25,19 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.1
 
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: true
+  image_path: "assets/icons/atm-card.png" # Path to your icon
+
 flutter:
   uses-material-design: true
-
   assets:
     - assets/fonts/
     - assets/images/
-    - assets/welcome.json
-    - assets/success.json
+    - assets/icons/
+    - assets/Lottie/
 
   fonts:
     - family: Outfit

@@ -39,6 +39,7 @@ class BankingApp extends StatelessWidget {
         '/pin': (context) => const PinCodeScreen(),
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const UserProfileScreen(),
+        '/transaction_result': (context) => const TransactionResultScreen(),
       },
     );
   }

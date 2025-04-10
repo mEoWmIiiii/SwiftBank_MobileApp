@@ -21,17 +21,17 @@ class UserProfileScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/images/user.png'),
+              backgroundImage: AssetImage('assets/icons/user.png'),
             ),
             const SizedBox(height: 20),
             const Text(
-              'John Doe',
+              'John',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
             ListTile(
               leading: Image.asset(
-                'assets/icons/home.svg',
+                'assets/icons/home.png',
                 width: 24,
                 height: 24,
               ),
@@ -40,7 +40,7 @@ class UserProfileScreen extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset(
-                'assets/icons/payment.png',
+                'assets/icons/telephone.png',
                 width: 24,
                 height: 24,
               ),
@@ -49,7 +49,7 @@ class UserProfileScreen extends StatelessWidget {
             ),
             ListTile(
               leading: Image.asset(
-                'assets/icons/transfer.svg',
+                'assets/icons/transfer.png',
                 width: 24,
                 height: 24,
               ),

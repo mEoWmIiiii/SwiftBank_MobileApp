@@ -24,8 +24,8 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
         });
 
         // Simulate PIN verification
-        Future.delayed(const Duration(milliseconds: 1500), () {
-          Navigator.pushNamed(context, '/profile');
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pushReplacementNamed(context, '/home'); // Navigate to home screen
         });
       }
     }
@@ -48,10 +48,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
         children: [
           if (isVerifying)
             // Show verification animation
-            Lottie.asset(
-              'assets/animations/loading.json',
-              width: 150,
-              height: 150,
+            Center(
+              child: Lottie.asset(
+                'assets/Lottie/loading.json',
+                width: 150,
+                height: 150,
+              ),
             )
           else
             Column(

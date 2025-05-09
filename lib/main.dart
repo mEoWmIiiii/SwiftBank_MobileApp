@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,7 +12,12 @@ import 'screens/home_screen.dart';
 import 'screens/user_profile_screen.dart';
 import 'screens/transaction_result_screen.dart';
 
-void main() => runApp(const BankingApp());
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const BankingApp());
+}
 
 class BankingApp extends StatelessWidget {
   const BankingApp({Key? key}) : super(key: key);
@@ -35,7 +41,7 @@ class BankingApp extends StatelessWidget {
       routes: {
         '/welcome': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
+        '/signup': (context) => SignupScreen(),
         '/pin': (context) => const PinCodeScreen(),
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const UserProfileScreen(),

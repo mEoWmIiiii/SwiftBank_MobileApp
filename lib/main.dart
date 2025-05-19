@@ -1,6 +1,9 @@
+import 'package:bankingapp/screens/transaction.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:bankingapp/BalanceProvider.dart';
 
 // Import all screens
 import 'screens/splash_screen.dart';
@@ -10,13 +13,18 @@ import 'screens/login_screen.dart';
 import 'screens/pin_code_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/user_profile_screen.dart';
-import 'screens/transaction_result_screen.dart';
+import 'screens/transaction.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const BankingApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => BalanceProvider(),
+      child: const BankingApp(),
+    ),
+  );
 }
 
 class BankingApp extends StatelessWidget {
@@ -43,9 +51,11 @@ class BankingApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => SignupScreen(),
         '/pin': (context) => const PinCodeScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/profile': (context) => const UserProfileScreen(),
-        '/transaction_result': (context) => const TransactionResultScreen(),
+        '/profile': (context) {
+          final userId = ModalRoute.of(context)!.settings.arguments as String;
+          return UserProfileScreen(userId: userId);
+        },
+        '/transaction': (context) => TransactionScreen(userId: 'someUserId'),
       },
     );
   }

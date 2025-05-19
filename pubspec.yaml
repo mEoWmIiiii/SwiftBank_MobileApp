@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.7.2
+  intl: ^0.20.2
+  provider: ^6.1.5
 
   # Animations
   lottie: ^2.6.0

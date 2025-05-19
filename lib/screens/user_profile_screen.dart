@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'edit_profile.dart';
+
+class UserProfile {
+  final String name;
+  final String email;
+
+  UserProfile({required this.name, required this.email});
+
+  factory UserProfile.fromMap(Map<String, dynamic> map) {
+    return UserProfile(
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+    );
+  }
+}
 
 class User {
   final int id;
@@ -45,8 +61,15 @@ Future<User> fetchUser() async {
   }
 }
 
+Future<UserProfile> fetchUserProfile(String userId) async {
+  final doc = await FirebaseFirestore.instance.collection('user-data').doc(userId).get();
+  if (!doc.exists) throw Exception('User not found');
+  return UserProfile.fromMap(doc.data()!);
+}
+
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  final String userId;
+  const UserProfileScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +83,8 @@ class UserProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<User>(
-        future: fetchUser(),
+      body: FutureBuilder<UserProfile>(
+        future: fetchUserProfile(userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -84,36 +107,28 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   ListTile(
-                    leading: Image.asset(
-                      'assets/icons/home.png',
-                      width: 24,
-                      height: 24,
-                    ),
+                    leading: Icon(Icons.email, color: Colors.blue),
                     title: const Text('Email'),
                     subtitle: Text(user.email),
                   ),
-                  ListTile(
-                    leading: Image.asset(
-                      'assets/icons/telephone.png',
-                      width: 24,
-                      height: 24,
-                    ),
-                    title: const Text('Phone'),
-                    subtitle: Text(user.phone),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      'assets/icons/transfer.png',
-                      width: 24,
-                      height: 24,
-                    ),
-                    title: const Text('Address'),
-                    subtitle: Text(user.address),
-                  ),
+                  // Add more fields as needed
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {
-                      // Add edit profile functionality
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(
+                            userId: userId,
+                            currentName: user.name,
+                            currentEmail: user.email,
+                          ),
+                        ),
+                      );
+                      if (result == true) {
+                        // Optionally show a snackbar or refresh the profile
+                        (context as Element).reassemble(); // Quick way to refresh FutureBuilder
+                      }
                     },
                     child: const Text('Edit Profile'),
                   ),

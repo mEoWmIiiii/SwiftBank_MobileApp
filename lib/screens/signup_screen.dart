@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'user.dart'; // Correct import for the User class
@@ -21,7 +23,6 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
 
   // Function to save user data
   Future<void> saveUserData(String username, String email, String password) async {
@@ -60,18 +61,46 @@ class _SignupScreenState extends State<SignupScreen> {
       );
       if (user != null) {
         log("User Created Successfully");
-        await saveUserData(
-          usernameController.text,
-          emailController.text,
-          passwordController.text,
-        );
+        await _savedUserData(user.uid);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
         );
       }
     } catch (e) {
-      log("Error: $e"); // Log any errors that occur during signup
+      log("Error: $e");
+    }
+  }
+  // Saved function
+  _savedUserData(String userid) async {
+    FirebaseFirestore users = FirebaseFirestore.instance;
+    FirebaseFirestore bankaccounts = FirebaseFirestore.instance;
+    //check if a user with the same email already exists
+    final existingUser = await users
+        .collection('users-data')
+        .where('email', isEqualTo: emailController.text)
+        .limit(1)
+        .get();
+    if (existingUser.docs.isEmpty) {
+      //no user with this email - safe to add
+      users.collection('user-data')
+          .doc(userid) // your custom ID here
+          .set({
+        'name': usernameController.text,
+        'email': emailController.text,
+        'pass': passwordController.text,
+      });
+      bankaccounts.collection('bank-account')
+          .doc(userid) // your custom ID here
+          .set({
+        'account-number': '1000-1000',
+        'balance': 1000,
+      });
+
+      print('User added.');
+    } else {
+      // a user with this email already exits.
+      print('User with this email already exists.');
     }
   }
 
@@ -142,28 +171,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-
-                // Phone Number Field
-                TextField(
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  keyboardType: TextInputType.phone,
-                ),
-                const SizedBox(height: 20),
-
-                // Removed Display Entered Phone Number
-                // Text(
-                //   'Entered Phone Number: ${phoneController.text}',
-                //   style: const TextStyle(fontSize: 16),
-                // ),
-                // const SizedBox(height: 20),
 
                 // Sign Up Button
                 ElevatedButton(

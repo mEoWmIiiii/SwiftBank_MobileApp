@@ -67,35 +67,105 @@ class TransactionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Transaction'),
+        backgroundColor: Color(0xFFF7F3FB),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Color(0xFF3A3A3A)),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF3A3A3A),
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // StreamBuilder to listen for balance changes
-            Consumer<BalanceProvider>(
-              builder: (context, balanceProvider, child) {
-                return Text(
-                  'Current Balance: ₱${balanceProvider.balance.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                );
-              },
+      body: Center(
+        child: Card(
+          elevation: 4,
+          margin: const EdgeInsets.all(24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Consumer<BalanceProvider>(
+                  builder: (context, balanceProvider, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Current Balance',
+                          style: TextStyle(
+                            color: Color(0xFF6C6C6C),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'PHP ${balanceProvider.balance.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF222222),
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 32),
+                const Text(
+                  'Deposit Amount',
+                  style: TextStyle(
+                    color: Color(0xFF6C6C6C),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _depositAmountController,
+                  decoration: InputDecoration(
+                    hintText: 'Enter amount',
+                    hintStyle: const TextStyle(color: Color(0xFFB0B0B0)),
+                    filled: true,
+                    fillColor: Color(0xFFF3F1F8),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(fontSize: 18, color: Color(0xFF222222)),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => _deposit(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF6C4AB6),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      'Deposit',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _depositAmountController,
-              decoration: InputDecoration(
-                labelText: 'Deposit Amount',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            ElevatedButton(
-              onPressed: () => _deposit(context),
-              child: const Text('Deposit'),
-            ),
-          ],
+          ),
         ),
       ),
     );

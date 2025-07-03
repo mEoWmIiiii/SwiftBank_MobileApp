@@ -83,19 +83,20 @@ class _SignupScreenState extends State<SignupScreen> {
         .get();
     if (existingUser.docs.isEmpty) {
       //no user with this email - safe to add
-      users.collection('user-data')
-          .doc(userid) // your custom ID here
+      await users.collection('user-data')
+          .doc(userid)
           .set({
         'name': usernameController.text,
         'email': emailController.text,
         'pass': passwordController.text,
       });
-      bankaccounts.collection('bank-account')
-          .doc(userid) // your custom ID here
+      await bankaccounts.collection('bank-account')
+          .doc(userid)
           .set({
-        'account-number': '1000-1000',
         'balance': 1000,
       });
+      // Generate and assign unique account number
+      await generateAndAssignAccountNumber(userid);
 
       print('User added.');
     } else {
@@ -104,16 +105,42 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  Future<String> generateAndAssignAccountNumber(String uid) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final DocumentReference counterRef = firestore.collection('metadata').doc('accountNumberCounter');
+    final DocumentReference userRef = firestore.collection('user-data').doc(uid);
+    final DocumentReference bankRef = firestore.collection('bank-account').doc(uid);
+
+    return firestore.runTransaction((transaction) async {
+      final counterSnapshot = await transaction.get(counterRef);
+      int latestSuffix;
+      if (!counterSnapshot.exists) {
+        latestSuffix = 1000;
+        transaction.set(counterRef, {'latestSuffix': latestSuffix});
+      } else {
+        latestSuffix = counterSnapshot.get('latestSuffix') as int;
+        latestSuffix += 1;
+        transaction.update(counterRef, {'latestSuffix': latestSuffix});
+      }
+      final accountNumber = '1000-$latestSuffix';
+      // Assign to user-data
+      transaction.set(userRef, {'accountNumber': accountNumber}, SetOptions(merge: true));
+      // Assign to bank-account
+      transaction.set(bankRef, {'account-number': accountNumber}, SetOptions(merge: true));
+      return accountNumber;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Sign Up', style: TextStyle(color: Colors.blue)),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.blue),
       ),
       body: Container(
-        color: Colors.white,
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: SingleChildScrollView(
@@ -198,9 +225,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       log("Google User Created Successfully");
                       await saveUserData(
                         user.displayName ?? usernameController.text,
-                        user.email ?? '', // Fallback to empty string if null
+                        user.email ?? emailController.text,
                         '',
                       );
+                      await generateAndAssignAccountNumber(user.uid);
 
                       Navigator.push(
                         context,

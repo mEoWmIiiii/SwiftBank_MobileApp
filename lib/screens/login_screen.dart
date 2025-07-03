@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Login', style: TextStyle(color: Colors.blue)), // Set title color to blue
         backgroundColor: Colors.white, // Set AppBar background to white
@@ -121,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: Colors.blue), // Blue border
-                    backgroundColor: Colors.white, // White background
                     foregroundColor: Colors.blue, // Blue text
                     minimumSize: const Size(double.infinity, 50), // Full width
                   ),

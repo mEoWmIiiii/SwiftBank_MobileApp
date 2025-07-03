@@ -5,6 +5,9 @@ import 'package:intl/intl.dart'; // Import for date formatting
 import 'package:bankingapp/screens/transaction.dart'; // Import the new TransactionScreen
 import 'package:provider/provider.dart';
 import 'package:bankingapp/BalanceProvider.dart'; // Update this import
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:bankingapp/screens/send_screen.dart';
+import 'package:bankingapp/screens/analytics_screen.dart';
 
 class UserData {
   final String name;
@@ -51,6 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
   String? error;
   int _selectedIndex = 0;
+  final List<String> imagePaths = [
+    'assets/images/shopee.jpg',
+    'assets/images/steam.jpg',
+    'assets/images/globe.jpg',
+  ];
+  int _currentAdIndex = 0;
 
   @override
   void initState() {
@@ -167,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
-      _homepage(userData?.name ?? '', bankAccount?.accountNumber ?? ''),
+      _homepage(userData?.name ?? '', widget.userId),
       _transferpage(),
       _historypage(),
       _settingsPage(),
@@ -176,22 +185,162 @@ class _HomeScreenState extends State<HomeScreen> {
     return ChangeNotifierProvider(
       create: (context) => BalanceProvider(),
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: _pages[_selectedIndex],
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedIndex,
-          onDestinationSelected: _onItemTapped,
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.compare_arrows_outlined), label: 'Transfer'),
-            NavigationDestination(icon: Icon(Icons.history), label: 'History'),
-            NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          color: const Color(0xFFF7F3FB),
+          elevation: 0,
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () => _onItemTapped(0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: _selectedIndex == 0 ? Color(0xFFE7E1F7) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(Icons.home, color: Color(0xFF3A3A3A), size: 24),
+                      ),
+                      SizedBox(height: 1),
+                      Text(
+                        'Home',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3A3A3A),
+                          fontWeight: _selectedIndex == 0 ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _onItemTapped(1),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: _selectedIndex == 1 ? Color(0xFFE7E1F7) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(Icons.compare_arrows_outlined, color: Color(0xFF3A3A3A), size: 24),
+                      ),
+                      SizedBox(height: 1),
+                      Text(
+                        'Transfer',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3A3A3A),
+                          fontWeight: _selectedIndex == 1 ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => SendScreen(userId: widget.userId)));
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Image.asset(
+                          'assets/icons/payment.png',
+                          width: 24,
+                          height: 24,
+                          color: Color(0xFF3A3A3A),
+                        ),
+                      ),
+                      SizedBox(height: 1),
+                      Text(
+                        'Send',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3A3A3A),
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _onItemTapped(2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: _selectedIndex == 2 ? Color(0xFFE7E1F7) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(Icons.history, color: Color(0xFF3A3A3A), size: 24),
+                      ),
+                      SizedBox(height: 1),
+                      Text(
+                        'History',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3A3A3A),
+                          fontWeight: _selectedIndex == 2 ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _onItemTapped(3),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: _selectedIndex == 3 ? Color(0xFFE7E1F7) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(Icons.settings, color: Color(0xFF3A3A3A), size: 24),
+                      ),
+                      SizedBox(height: 1),
+                      Text(
+                        'Settings',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3A3A3A),
+                          fontWeight: _selectedIndex == 3 ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _homepage(String name, String accountNumber) {
+  Widget _homepage(String name, String userId) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -209,34 +358,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Real-time greeting header
-            StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('user-data')
-                  .doc(widget.userId)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SizedBox(height: 32);
-                }
-                if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
-                  return const Text('Hi!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold));
-                }
-                final data = snapshot.data!.data() as Map<String, dynamic>;
-                final String name = data['name'] ?? '';
-                return Text(
-                  'Hi $name!',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                );
-              },
+            Text(
+              'Welcome, $name',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-
-            // Orange card for account number and balance
+            // Real-time account number display
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('bank-account')
-                  .doc(widget.userId)
+                  .doc(userId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -249,66 +380,87 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const Center(child: Text('No account found.'));
                 }
                 final data = snapshot.data!.data() as Map<String, dynamic>;
+                final String accNum = (data['account-number'] ?? '').toString().isEmpty ? 'Not assigned' : data['account-number'];
                 final double currentBalance = (data['balance'] ?? 0.0).toDouble();
-                final String accNum = data['account-number'] ?? '';
-                // Update the provider with the current balance
                 Provider.of<BalanceProvider>(context, listen: false).updateBalance(currentBalance);
                 return Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: 24),
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF6D5FFD), Color(0xFF46A8E0)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 12,
-                        offset: Offset(0, 6),
+                        color: Colors.black26,
+                        blurRadius: 16,
+                        offset: Offset(0, 8),
                       ),
                     ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Optional: Card chip or logo
+                          Icon(Icons.credit_card, color: Colors.white70, size: 32),
+                          // Optional: Bank or app name
                       Text(
-                        'Account Number:',
+                            'MyBank',
                         style: TextStyle(
-                          color: Colors.grey[800],
-                          fontSize: 16,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Account Number',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
                         ),
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         accNum,
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: TextStyle(
+                          color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                      const SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Available Balance:',
+                            'Available Balance',
                               style: TextStyle(
-                                color: Colors.grey[800],
-                                fontSize: 16,
+                              color: Colors.white70,
+                              fontSize: 14,
                               ),
                             ),
                             Text(
                               'PHP ${currentBalance.toStringAsFixed(1)}',
-                              style: const TextStyle(
-                                color: Colors.black,
+                            style: TextStyle(
+                              color: Colors.white,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
                               ),
                             ),
                           ],
-                        ),
                       ),
                     ],
                   ),
@@ -318,59 +470,62 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 24),
 
-            // Transactions section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Transactions',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    'Special Deals',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Show all transactions
-                  },
-                  child: const Text('See All'),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  CarouselSlider(
+                    items: imagePaths.map((path) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            path,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 160,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    options: CarouselOptions(
+                      height: 160,
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.9,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentAdIndex = index;
+                        });
+                      },
+                    ),
             ),
             const SizedBox(height: 8),
-
-            // Transaction list
-            _buildTransactionItem(
-              context,
-              icon: Icons.shopping_bag,
-              title: 'Shopping',
-              date: 'May 15, 2024',
-              amount: '-\$123.45',
-              isExpense: true,
-            ),
-            _buildTransactionItem(
-              context,
-              icon: Icons.attach_money,
-              title: 'Salary',
-              date: 'May 10, 2024',
-              amount: '+\$2,450.00',
-              isExpense: false,
-            ),
-            _buildTransactionItem(
-              context,
-              icon: Icons.fastfood,
-              title: 'Restaurant',
-              date: 'May 8, 2024',
-              amount: '-\$45.80',
-              isExpense: true,
-            ),
-            _buildTransactionItem(
-              context,
-              icon: Icons.card_giftcard,
-              title: 'Gift',
-              date: 'May 5, 2024',
-              amount: '+\$50.00',
-              isExpense: false,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imagePaths.asMap().entries.map((entry) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: _currentAdIndex == entry.key ? 16 : 8,
+                        height: 8,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: _currentAdIndex == entry.key ? Colors.deepPurple : Colors.grey[300],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -724,10 +879,17 @@ class _HomeScreenState extends State<HomeScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             elevation: 2,
             child: ListTile(
-              leading: const Icon(Icons.info_outline, color: Colors.blue),
-              title: const Text('About App'),
+              leading: const Icon(Icons.bar_chart, color: Colors.teal),
+              title: const Text('View Analytics'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AnalyticsScreen(userId: widget.userId),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(height: 32),

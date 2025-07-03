@@ -42,7 +42,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Enter PIN')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text('Enter PIN'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

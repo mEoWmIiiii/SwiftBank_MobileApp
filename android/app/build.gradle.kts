@@ -11,13 +11,22 @@ android {
     compileSdk = 35
     ndkVersion = "29.0.13113456"
 
+//    singingConfig {
+//        release {
+//            storeFile file("C:\\Users\\Luissy Jane\\upload-keystore.jks")
+//            storePassword "asdfgh"
+//            keyAlias "upload"
+//            keyPassword "asdfgh"
+//        }
+//    }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "17"
     }
 
     defaultConfig {

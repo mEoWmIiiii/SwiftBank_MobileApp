@@ -1,16 +1,56 @@
-# projects
+# SwiftBank
 
-A new Flutter project.
+SwiftBank is a simple prototype of a mobile banking application built with Flutter. It offers essential financial services through a user-friendly interface, simulating the core features of a digital banking platform.
+
+---
+
+## Features
+
+- **User Authentication**
+  - Account creation (sign up)
+  - Login and logout
+
+- **Account Management**
+  - View account balance
+  - View transaction history
+
+- **Financial Transactions**
+  - Deposit funds
+  - Transfer money between accounts
+
+- **Analytics**
+  - Spending overview and visual breakdown
+  - Insights into recent activity
+
+- **User Profile**
+  - Update personal information
+  - Upload a profile picture
+
+---
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Follow these steps to set up and run SwiftBank on your local machine.
 
-A few resources to get you started if this is your first Flutter project:
+### 1. Clone the Repository
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+git clone https://github.com/your-username/swiftbank.git
+cd swiftbank
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2. Install Dependencies
+
+Ensure that Flutter is installed on your system. Then, run:
+
+```bash
+flutter pub get
+```
+
+### 3. Run the App
+
+Use the following command to launch the app on a simulator, emulator, or connected device:
+
+```bash
+flutter run
+```

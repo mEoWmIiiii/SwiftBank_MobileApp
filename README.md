@@ -35,8 +35,7 @@ Follow these steps to set up and run SwiftBank on your local machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/swiftbank.git
-cd swiftbank
+git clone [https://github.com/your-username/swiftbank.git](https://github.com/mEoWmIiiii/SwiftBank_MobileApp.git)
 ```
 
 ### 2. Install Dependencies

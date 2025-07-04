@@ -54,12 +54,12 @@ Use the following command to launch the app on a simulator, emulator, or connect
 flutter run
 ```
 
+---
+
 You can test the SwiftBank app without building from source by downloading the latest release.
 
 Latest Version: v1.0.2
 
-Go to the Releases section of this repository.
-
-Download the latest .apk file for version v1.0.2.
-
-Install it on your Android device (you may need to enable "Install from Unknown Sources").
+- Go to the Releases section of this repository.
+- Download the latest .apk file for version v1.0.2.
+- Install it on your Android device (you may need to enable "Install from Unknown Sources").
